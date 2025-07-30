@@ -15,13 +15,18 @@ python-m venv flux" under Python version 3.10
 
 # 2.Download dependence
 you can use the mirror source, you can also download directly from the official.Make sure it is a GPU version, and the versions of PyTroch, CUDA and cuDNN are compatible.
-"pip install torch==2.4.0 torchvision==0.19.0 xformers==0.0.27.post2 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package"
-"pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple some-package"
+```
+pip install torch==2.4.0 torchvision==0.19.0 xformers==0.0.27.post2 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
+```
+```
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
+```
 
 # 3.Set up the training environment
 You also need to set the training environment parameters of FLUX.1 model, mainly using the ability of accelerate library, which can make the training and reasoning of PyTorch more efficient and concise. Enter the following commands at the command line, and fill in each setting one by one to complete the optimal configuration. The environment configuration process of single-machine single-card training and single-machine multi-card training is as follows.
 
 (1)Configuration of single machine and single card training;
+```
 accelerate config
 
 In which compute environment are you running? 
@@ -44,10 +49,11 @@ Would you like to enable numa efficiency? (Currently only supported on NVIDIA ha
 Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                        
 Please select a choice using the arrow or number keys, and selecting with enter                                           
 (fp16)
-  
+```
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
 (2)Configuration of single machine multi-card training;
+```
 accelerate config
 
 In which compute environment are you running? 
@@ -76,41 +82,47 @@ Would you like to enable numa efficiency? (Currently only supported on NVIDIA ha
 
 Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                      
 Please select a choice using the arrow or number keys, and selecting with enter                                                                          (fp16)                 
-                                                                             
+```                                                                           
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
 # 4.Set the text encoder
 When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
 Under normal circumstances, FLUX.1 model will download configuration files from huggingface to ~/.cache/huggingface/ directory, but the download will probably fail due to network reasons, which will lead to the failure of training.
 Therefore, three configuration files, namely clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, have been put into the utils_json folder of the flux_finetune project, and the dependency paths have been configured for everyone. Just use Flux _ Fine. If you want to modify the call paths of the dependent folders clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, the corresponding part in the library/strategy_flux.py script will be modified into its own local customized path.
-
+```
 CLIP_L_TOKENIZER_ID = "./utils_json/clip-vit-large-patch14"
 T5_XXL_TOKENIZER_ID = "./utils_json/t5-v1_1-xxl"  # Lines 20-21 of the strategy_flux.py script
-
+```
 # 5.Making FLUX.1 Model Training Data Set
 Data annotation can be divided into automatic annotation and manual annotation. Automatic labeling mainly depends on models such as BLIP and WaifuDiffusion Tagger, while manual labeling depends on labeling personnel.
 Judging from the annotation content, the annotation content in AI painting field can be mainly divided into two tasks: Img2Caption and Img2Tag.
 (1) using BLIP to automatically generate caption tags (natural language tags) of data.
 Automatically label data sets with BLIP, and the output of BLIP is natural language label. Enter the path of flux_finetune/finetune/ and run the following code to get natural language label (caption label):
 <img width="906" height="30" alt="image" src="https://github.com/user-attachments/assets/bfc871d0-1914-4852-9750-5ee8c029a33c" />
-
+```
 cd flux_finetune/finetune/
+```
 python make_captions.py "/Replace with dataset path" --caption_weights "../BLIP/model_large_caption.pth" --batch_size=1 --beam_search --min_length=5 --max_length=100 --debug --caption_extension=".caption" --max_data_loader_n_workers=2 --recursive
+```
 (2) Using WaifuDiffusion Tagger model to automatically generate data tag (permutation and combination of words)
 Calling WaifuDiffusion Tagger model needs to install a specific version (2.10.0) of Tensorflow library, otherwise the runtime will report "DNN library is not found" error. Enter the following command at the command line to complete the version check and installation adaptation of Tensorflow library:
-
+```
 pip show tensorflow
 Name: tensorflow
 Version: 2.10.0
 Summary: TensorFlow is an open source machine learning framework for everyone.
-
+```
+```
 pip install tensorflow==2.10.0 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package # If the Tenosrflow library is not installed or the version is wrong, you can re-install it by entering the following command.
-
+```
 Next, the training data can be automatically labeled using WaifuDiffusion Tagger model, and the output of WaifuDiffusion Tagger model is tag keyword tags, which are composed of keyword phrases:
 <img width="1827" height="30" alt="image" src="https://github.com/user-attachments/assets/b2fa13d6-5968-4a53-b40a-1d5c749d3dbf" />
-
+```
 cd flux_finetune/finetune/
+```
+```
 python tag_images_by_wd14_tagger.py "/Data path" --batch_size=8 --model_dir "../tag_models" --repo_id "wd-v1-4-moat-tagger-v2" --remove_underscore --general_threshold=0.35 --character_threshold=0.35 --caption_extension=".txt" --max_data_loader_n_workers=2 --debug --undesired_tags=""
+```
 (3) Supplementary custom special labels
 After completing the automatic annotation of caption and tag, if we need to train some custom special annotations, we can also supplement the annotation of the data.
 You can directly open the file flux_finetune/custom tag.ipynb, modify the parameters according to the comments provided in the code, and then run the code to supplement the annotation of the data set. If you think the code is too complicated, you just need to set the train_data_dir ="/ local data set path "and custom_tag ="WeThinkIn" as the local path of your own data set and the special tag you want to add, and then run the code, which is very simple and practical.
@@ -119,10 +131,12 @@ Generally, the special tags added manually will be put in the first place, becau
 Making meta_data.json of training data: integrating the annotation files with suffixes of. caption and. txt just generated and storing them into a json format file, so as to facilitate the subsequent training of FLUX.1 model to retrieve training data and annotations according to the information in json.
 Make meta_data.json file of training data:
 <img width="1734" height="180" alt="image" src="https://github.com/user-attachments/assets/708a2b56-1913-4c13-8c2a-fbf6b2c8856e" />
-
+```
 cd flux_finetune
+```
+```
 python ./finetune/merge_all_to_metadata.py "/Local data path ""/local data path/meta_data.json"
-
+```
 # 6.Fine-tuning training of FLUX.1 model
 Fine-tuning training has two main goals:
 (1)Enhance the image generation ability of FLUX.1 model.
@@ -130,7 +144,7 @@ Fine-tuning training has two main goals:
 The parameter configuration and training script of FLUX.1 fine-tuning training include FLUX.1-dev and FLUX.1-schnell versions.
 
 Find the corresponding training data parameter configuration file (data_config.toml) in the data _ config folder of the flux_finetune project, and find the flux_finetune.sh script in the flux _ finetune project, which contains the core training parameters.
-
+```
 [general] # define common settings here
 flip_aug = false
 color_aug = false
@@ -153,8 +167,13 @@ bucket_no_upscale = false
   [[datasets.subsets]]
   image_dir = "/Local path"
   num_repeats = 10
-
-Finally, use the sh FLUX_finetune.sh command to start the training process of FLUX.1 model, and you can train your own FLUX.1 model:
+```
+Finally, use the
+```
+sh FLUX_finetune.sh 
+```
+command to start the training process of FLUX.1 model, and you can train your own FLUX.1 model:
+```
 accelerate launch  
   --num_cpu_threads_per_process 8 flux_train.py \  
   --pretrained_model_name_or_path "/Local path/flux1-dev.safetensors" \
@@ -191,7 +210,7 @@ accelerate launch
   --fused_backward_pass \
   --blocks_to_swap 35 \
   --fp8_base 
-
+```
 # 7.Loading self-training FLUX.1 model for AI painting.
 After the FLUX.1 model fine-tuning training is completed, the model weights will be saved in the output_dir path we set before. Next, you can use ComfyUI or webui as a framework to load FLUX.1 fine-tuning model for AI painting.
 This part needs to use ComfyUI or webui framework. If I have time, I can supplement it later here, mainly to see if I can remember it.
