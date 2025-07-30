@@ -100,6 +100,7 @@ T5_XXL_TOKENIZER_ID = "./utils_json/t5-v1_1-xxl"  # Lines 20-21 of the strategy_
 # 5.Making FLUX.1 Model Training Data Set
 Data annotation can be divided into automatic annotation and manual annotation. Automatic labeling mainly depends on models such as BLIP and WaifuDiffusion Tagger, while manual labeling depends on labeling personnel.
 Judging from the annotation content, the annotation content in AI painting field can be mainly divided into two tasks: Img2Caption and Img2Tag.
+
 (1) using BLIP to automatically generate caption tags (natural language tags) of data.
 Automatically label data sets with BLIP, and the output of BLIP is natural language label. Enter the path of flux_finetune/finetune/ and run the following code to get natural language label (caption label):
 <img width="906" height="30" alt="image" src="https://github.com/user-attachments/assets/bfc871d0-1914-4852-9750-5ee8c029a33c" />
