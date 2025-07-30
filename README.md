@@ -83,7 +83,9 @@ What GPU(s) (by id) should be used for training on this machine as a comma-seper
 Would you like to enable numa efficiency? (Currently only supported on NVIDIA hardware). [yes/NO]:  # Press Enter.
 
 Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                      
-Please select a choice using the arrow or number keys, and selecting with enter                                                                          (fp16)                 
+Please select a choice using the arrow or number keys, and selecting with enter
+
+(fp16)                 
 ```                                                                           
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
