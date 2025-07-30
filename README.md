@@ -4,7 +4,7 @@ Original project link, cited by https://zhuanlan.zhihu.com/p/684068402.
 Only for learning and communication, not for business.
 
 # 1.Create environment
-there must be an environment, which can be the default, but it is best to create a new virtual environment. If it is a conda environment, you can use ``` 
+there must be an environment, which can be the default, but it is best to create a new virtual environment. If it is a conda environment, you can use  
 ```
 conda create-name flux python = 3.10 
 ```
