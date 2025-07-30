@@ -19,21 +19,12 @@ accelerate config
 
 In which compute environment are you running? 
 Please select a choice using the arrow or number keys, and selecting with enter
-
- ➔  This machine
-    AWS (Amazon SageMaker)
+(This machine)
+ 
                                                                                                        
 Which type of machine are you using? Please select a choice using the arrow or number keys, and selecting with enter
- 
- ➔  No distributed training
-    multi-CPU
-    multi-XPU
-    multi-GPU
-    multi-NPU
-    multi-MLU
-    multi-MUSA
-    TPU
-
+(No distributed training)
+  
 Do you want to run your training on CPU only (even if a GPU / Apple Silicon / Ascend NPU device is available)? [yes/NO]:NO
 
 Do you wish to optimize your script with torch dynamo?[yes/NO]: # Press Enter.                                                                                                                                                         
@@ -45,12 +36,8 @@ Would you like to enable numa efficiency? (Currently only supported on NVIDIA ha
 
 Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                        
 Please select a choice using the arrow or number keys, and selecting with enter                                           
-   
-    no                                                                                                                                                    
-➔  fp16
-    bf16
-    fp8                    
-
+(fp16)
+  
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
 (2)Configuration of single machine multi-card training;
@@ -58,21 +45,11 @@ accelerate config
 
 In which compute environment are you running? 
 Please select a choice using the arrow or number keys, and selecting with enter
- 
- ➔  This machine
-    AWS (Amazon SageMaker)
+(This machine)
                                                                                                        
-Which type of machine are you using?                                                                                                                      
-Please select a choice using the arrow or number keys, and selecting with enter
-  
-    No distributed training                                                                                                                               
-    multi-CPU                        
-    multi-XPU                         
- ➔  multi-GPU
-    multi-NPU
-    multi-MLU
-    multi-MUSA
-    TPU
+Which type of machine are you using?                                                                                                                     
+Please select a choice using the arrow or number keys, and selecting with enter                  
+(multi-GPU)
 
 How many different machines will you use (use more than 1 for multi-node training)? [1]: 1
 
@@ -82,7 +59,6 @@ Do you want to use DeepSpeed? [yes/NO]: # Press Enter.
 Do you want to use FullyShardedDataParallel? [yes/NO]: # Press Enter.                                                                                                                                                                     
 Do you want to use Megatron-LM ? [yes/NO]: # Press Enter.
  
-
 How many GPU(s) should be used for distributed training? [1]:8   # How many GPUs to allocate for training? Assuming we have 8 GPUs, you can enter a number between 1 and 8.
 
 Set the ID of the GPU card(s) used for training. If all GPUs are to be used for training, enter "all".
@@ -91,23 +67,18 @@ What GPU(s) (by id) should be used for training on this machine as a comma-seper
                      
 Would you like to enable numa efficiency? (Currently only supported on NVIDIA hardware). [yes/NO]:  # Press Enter.
 
-Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                        
-Please select a choice using the arrow or number keys, and selecting with enter                                                                           
-   
-    no                        
- ➔  fp16
-    bf16
-    fp8                    
+Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                      
+Please select a choice using the arrow or number keys, and selecting with enter                                                                          (fp16)                 
                                                                              
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
 # 4.Set the text encoder
 When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
 Under normal circumstances, FLUX.1 model will download configuration files from huggingface to ~/.cache/huggingface/ directory, but the download will probably fail due to network reasons, which will lead to the failure of training.
-Therefore, three configuration files, namely clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, have been put into the utils_json folder of the flux_finetune project, and the dependency paths have been configured for everyone. Just use Flux _ Fine. If you want to modify the call paths of the dependent folders clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, the corresponding part in the library/strategy_flux.py script will be modified into its own local customized path, such as "/local path/utils _".
+Therefore, three configuration files, namely clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, have been put into the utils_json folder of the flux_finetune project, and the dependency paths have been configured for everyone. Just use Flux _ Fine. If you want to modify the call paths of the dependent folders clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, the corresponding part in the library/strategy_flux.py script will be modified into its own local customized path.
 
-CLIP_L_TOKENIZER_ID = "./utils_json/clip-vit-large-patch14" # Lines 20-21 of the strategy_flux.py script
-T5_XXL_TOKENIZER_ID = "./utils_json/t5-v1_1-xxl"
+CLIP_L_TOKENIZER_ID = "./utils_json/clip-vit-large-patch14"
+T5_XXL_TOKENIZER_ID = "./utils_json/t5-v1_1-xxl"  # Lines 20-21 of the strategy_flux.py script
 
 # 5.Making FLUX.1 Model Training Data Set
 Data annotation can be divided into automatic annotation and manual annotation. Automatic labeling mainly depends on models such as BLIP and WaifuDiffusion Tagger, while manual labeling depends on labeling personnel.
@@ -129,7 +100,7 @@ Summary: TensorFlow is an open source machine learning framework for everyone.
 pip install tensorflow==2.10.0 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package # If the Tenosrflow library is not installed or the version is wrong, you can re-install it by entering the following command.
 
 Next, the training data can be automatically labeled using WaifuDiffusion Tagger model, and the output of WaifuDiffusion Tagger model is tag keyword tags, which are composed of keyword phrases:
-<img width="1059" height="89" alt="image" src="https://github.com/user-attachments/assets/0e4bccfa-7d28-4353-b7d7-317afe8b1145" />
+<img width="1827" height="30" alt="image" src="https://github.com/user-attachments/assets/b2fa13d6-5968-4a53-b40a-1d5c749d3dbf" />
 
 cd flux_finetune/finetune/
 python tag_images_by_wd14_tagger.py "/Data path" --batch_size=8 --model_dir "../tag_models" --repo_id "wd-v1-4-moat-tagger-v2" --remove_underscore --general_threshold=0.35 --character_threshold=0.35 --caption_extension=".txt" --max_data_loader_n_workers=2 --debug --undesired_tags=""
