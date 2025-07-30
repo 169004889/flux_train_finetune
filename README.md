@@ -3,13 +3,13 @@ Automatic label generation and title generation of image data with clean backgro
 Original project link, cited by https://zhuanlan.zhihu.com/p/684068402.
 Only for learning and communication, not for business.
 # step
-1.First of all, there must be an environment, which can be the default, but it is best to create a new virtual environment. If it is a conda environment, you can use "conda create-name flux python = 3.10". Or use "python-m venv flux" under Python version 3.10.
+# 1.First of all, there must be an environment, which can be the default, but it is best to create a new virtual environment. If it is a conda environment, you can use "conda create-name flux python = 3.10". Or use "python-m venv flux" under Python version 3.10.
 
-2.Download dependence, you can use the mirror source, you can also download directly from the official.Make sure it is a GPU version, and the versions of PyTroch, CUDA and cuDNN are compatible.
+# 2.Download dependence, you can use the mirror source, you can also download directly from the official.Make sure it is a GPU version, and the versions of PyTroch, CUDA and cuDNN are compatible.
 "pip install torch==2.4.0 torchvision==0.19.0 xformers==0.0.27.post2 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package"
 "pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple some-package"
 
-3.You also need to set the training environment parameters of FLUX.1 model, mainly using the ability of accelerate library, which can make the training and reasoning of PyTorch more efficient and concise. Enter the following commands at the command line, and fill in each setting one by one to complete the optimal configuration. The environment configuration process of single-machine single-card training and single-machine multi-card training is as follows.
+# 3.You also need to set the training environment parameters of FLUX.1 model, mainly using the ability of accelerate library, which can make the training and reasoning of PyTorch more efficient and concise. Enter the following commands at the command line, and fill in each setting one by one to complete the optimal configuration. The environment configuration process of single-machine single-card training and single-machine multi-card training is as follows.
 
 (1)Configuration of single machine and single card training;
 accelerate config
@@ -34,8 +34,7 @@ Do you want to run your training on CPU only (even if a GPU / Apple Silicon / As
 Do you wish to optimize your script with torch dynamo?[yes/NO]: # Press Enter.                                                                                                                                                         
 Do you want to use DeepSpeed? [yes/NO]: # Press Enter.
 
-# Choose which GPU to use for training. If you only have one GPU, simply enter "all". If you have multiple GPUs, say 8 GPUs, you can enter a number from 0 to 7 to specify the particular GPU to use for training.
-What GPU(s) (by id) should be used for training on this machine as a comma-seperated list? [all]:all     
+What GPU(s) (by id) should be used for training on this machine as a comma-seperated list? [all]:all  # Choose which GPU to use for training. If you only have one GPU, simply enter "all". If you have multiple GPUs, say 8 GPUs, you can enter a number from 0 to 7 to specify the particular GPU to use for training.  
                
 Would you like to enable numa efficiency? (Currently only supported on NVIDIA hardware). [yes/NO]:  # Press Enter.
 
@@ -74,13 +73,12 @@ Do you want to use DeepSpeed? [yes/NO]: # Press Enter.
 Do you want to use FullyShardedDataParallel? [yes/NO]: # Press Enter.                                                                                                                                                                     
 Do you want to use Megatron-LM ? [yes/NO]: # Press Enter.
  
-# How many GPUs to allocate for training? Assuming we have 8 GPUs, you can enter a number between 1 and 8.
-How many GPU(s) should be used for distributed training? [1]:8     
+
+How many GPU(s) should be used for distributed training? [1]:8   # How many GPUs to allocate for training? Assuming we have 8 GPUs, you can enter a number between 1 and 8.
 
 Set the ID of the GPU card(s) used for training. If all GPUs are to be used for training, enter "all".
 
-# If only some GPUs are to be used for training, you need to enter the specific GPU card IDs. For example, if we have 8 cards and want to use 2 of them for training, you can enter 0,1 or 3,7, etc.
-What GPU(s) (by id) should be used for training on this machine as a comma-seperated list? [all]:all
+What GPU(s) (by id) should be used for training on this machine as a comma-seperated list? [all]:all # If only some GPUs are to be used for training, you need to enter the specific GPU card IDs. For example, if we have 8 cards and want to use 2 of them for training, you can enter 0,1 or 3,7, etc.
                      
 Would you like to enable numa efficiency? (Currently only supported on NVIDIA hardware). [yes/NO]:  # Press Enter.
 
@@ -93,14 +91,14 @@ Please select a choice using the arrow or number keys, and selecting with enter
                                                                              
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
-4.When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
+# 4.When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
 Under normal circumstances, FLUX.1 model will download configuration files from huggingface to ~/.cache/huggingface/ directory, but the download will probably fail due to network reasons, which will lead to the failure of training.
 Therefore, three configuration files, namely clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, have been put into the utils_json folder of the flux_finetune project, and the dependency paths have been configured for everyone. Just use Flux _ Fine. If you want to modify the call paths of the dependent folders clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, the corresponding part in the library/strategy_flux.py script will be modified into its own local customized path, such as "/local path/utils _".
-# Lines 20-21 of the strategy_flux.py script
-CLIP_L_TOKENIZER_ID = "./utils_json/clip-vit-large-patch14"
+
+CLIP_L_TOKENIZER_ID = "./utils_json/clip-vit-large-patch14" # Lines 20-21 of the strategy_flux.py script
 T5_XXL_TOKENIZER_ID = "./utils_json/t5-v1_1-xxl"
 
-5.Making FLUX.1 Model Training Data Set
+# 5.Making FLUX.1 Model Training Data Set
 Data annotation can be divided into automatic annotation and manual annotation. Automatic labeling mainly depends on models such as BLIP and WaifuDiffusion Tagger, while manual labeling depends on labeling personnel.
 Judging from the annotation content, the annotation content in AI painting field can be mainly divided into two tasks: Img2Caption and Img2Tag.
 (1) using BLIP to automatically generate caption tags (natural language tags) of data.
@@ -116,8 +114,7 @@ Name: tensorflow
 Version: 2.10.0
 Summary: TensorFlow is an open source machine learning framework for everyone.
 
-# If the Tenosrflow library is not installed or the version is wrong, you can re-install it by entering the following command.
-pip install tensorflow==2.10.0 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
+pip install tensorflow==2.10.0 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package # If the Tenosrflow library is not installed or the version is wrong, you can re-install it by entering the following command.
 
 Next, the training data can be automatically labeled using WaifuDiffusion Tagger model, and the output of WaifuDiffusion Tagger model is tag keyword tags, which are composed of keyword phrases:
 <img width="1059" height="89" alt="image" src="https://github.com/user-attachments/assets/0e4bccfa-7d28-4353-b7d7-317afe8b1145" />
@@ -134,7 +131,7 @@ Make meta_data.json file of training data:
 cd flux_finetune
 python ./finetune/merge_all_to_metadata.py "/Local data path ""/local data path/meta_data.json"
 
-6.Fine-tuning training of FLUX.1 model
+# 6.Fine-tuning training of FLUX.1 model
 Fine-tuning training has two main goals:
 (1)Enhance the image generation ability of FLUX.1 model.
 (2)Increase the ability of FLUX.1 model to trigger and respond to the new prompt.
@@ -142,8 +139,7 @@ The parameter configuration and training script of FLUX.1 fine-tuning training i
 
 Find the corresponding training data parameter configuration file (data_config.toml) in the data _ config folder of the flux_finetune project, and find the flux_finetune.sh script in the flux _ finetune project, which contains the core training parameters.
 
-[general]
-# define common settings here
+[general] # define common settings here
 flip_aug = false
 color_aug = false
 random_crop = false
@@ -153,8 +149,7 @@ caption_extension = ".txt"
 keep_tokens = 1
 keep_tokens_separator= "|||"
 
-[[datasets]]
-# define the first resolution here
+[[datasets]] # define the first resolution here
 batch_size = 1
 enable_bucket = true
 resolution = [1024, 1024]
@@ -205,7 +200,7 @@ accelerate launch
   --blocks_to_swap 35 \
   --fp8_base 
 
-7.Loading self-training FLUX.1 model for AI painting.
+# 7.Loading self-training FLUX.1 model for AI painting.
 After the FLUX.1 model fine-tuning training is completed, the model weights will be saved in the output_dir path we set before. Next, you can use ComfyUI or webui as a framework to load FLUX.1 fine-tuning model for AI painting.
 This part needs to use ComfyUI or webui framework. If I have time, I can supplement it later here, mainly to see if I can remember it.
 In addition, there is a LoRA model based on FLUX.1 training, and you can supplement it later.
