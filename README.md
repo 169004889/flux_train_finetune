@@ -102,6 +102,7 @@ Automatically label data sets with BLIP, and the output of BLIP is natural langu
 ```
 cd flux_finetune/finetune/
 ```
+```
 python make_captions.py "/Replace with dataset path" --caption_weights "../BLIP/model_large_caption.pth" --batch_size=1 --beam_search --min_length=5 --max_length=100 --debug --caption_extension=".caption" --max_data_loader_n_workers=2 --recursive
 ```
 (2) Using WaifuDiffusion Tagger model to automatically generate data tag (permutation and combination of words)
