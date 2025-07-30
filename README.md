@@ -2,14 +2,17 @@
 Automatic label generation and title generation of image data with clean background, training of fine-tuning model.
 Original project link, cited by https://zhuanlan.zhihu.com/p/684068402.
 Only for learning and communication, not for business.
-# step
-# 1.First of all, there must be an environment, which can be the default, but it is best to create a new virtual environment. If it is a conda environment, you can use "conda create-name flux python = 3.10". Or use "python-m venv flux" under Python version 3.10.
 
-# 2.Download dependence, you can use the mirror source, you can also download directly from the official.Make sure it is a GPU version, and the versions of PyTroch, CUDA and cuDNN are compatible.
+# 1.Create environment
+there must be an environment, which can be the default, but it is best to create a new virtual environment. If it is a conda environment, you can use "conda create-name flux python = 3.10". Or use "python-m venv flux" under Python version 3.10.
+
+# 2.Download dependence
+you can use the mirror source, you can also download directly from the official.Make sure it is a GPU version, and the versions of PyTroch, CUDA and cuDNN are compatible.
 "pip install torch==2.4.0 torchvision==0.19.0 xformers==0.0.27.post2 -i https://pypi.tuna.tsinghua.edu.cn/simple some-package"
 "pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple some-package"
 
-# 3.You also need to set the training environment parameters of FLUX.1 model, mainly using the ability of accelerate library, which can make the training and reasoning of PyTorch more efficient and concise. Enter the following commands at the command line, and fill in each setting one by one to complete the optimal configuration. The environment configuration process of single-machine single-card training and single-machine multi-card training is as follows.
+# 3.Set up the training environment
+You also need to set the training environment parameters of FLUX.1 model, mainly using the ability of accelerate library, which can make the training and reasoning of PyTorch more efficient and concise. Enter the following commands at the command line, and fill in each setting one by one to complete the optimal configuration. The environment configuration process of single-machine single-card training and single-machine multi-card training is as follows.
 
 (1)Configuration of single machine and single card training;
 accelerate config
@@ -19,7 +22,7 @@ Please select a choice using the arrow or number keys, and selecting with enter
  ➔  This machine
     AWS (Amazon SageMaker)
                                                                                                        
-Which type of machine are you using?                                                                                                                      Please select a choice using the arrow or number keys, and selecting with enter
+Which type of machine are you using? Please select a choice using the arrow or number keys, and selecting with enter
  ➔  No distributed training
     multi-CPU
     multi-XPU
@@ -40,7 +43,8 @@ Would you like to enable numa efficiency? (Currently only supported on NVIDIA ha
 
 Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                        
 Please select a choice using the arrow or number keys, and selecting with enter                                           
-    no                                                                                                                                                    ➔  fp16
+    no                                                                                                                                                    
+➔  fp16
     bf16
     fp8                    
 
@@ -91,7 +95,8 @@ Please select a choice using the arrow or number keys, and selecting with enter
                                                                              
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
-# 4.When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
+# 4.Set the text encoder
+When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
 Under normal circumstances, FLUX.1 model will download configuration files from huggingface to ~/.cache/huggingface/ directory, but the download will probably fail due to network reasons, which will lead to the failure of training.
 Therefore, three configuration files, namely clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, have been put into the utils_json folder of the flux_finetune project, and the dependency paths have been configured for everyone. Just use Flux _ Fine. If you want to modify the call paths of the dependent folders clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, the corresponding part in the library/strategy_flux.py script will be modified into its own local customized path, such as "/local path/utils _".
 
@@ -203,6 +208,6 @@ accelerate launch
 # 7.Loading self-training FLUX.1 model for AI painting.
 After the FLUX.1 model fine-tuning training is completed, the model weights will be saved in the output_dir path we set before. Next, you can use ComfyUI or webui as a framework to load FLUX.1 fine-tuning model for AI painting.
 This part needs to use ComfyUI or webui framework. If I have time, I can supplement it later here, mainly to see if I can remember it.
-In addition, there is a LoRA model based on FLUX.1 training, and you can supplement it later.
+In addition, there is a LoRA model based on FLUX.1 training, and I can supplement it later.
 
 
