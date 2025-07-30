@@ -131,8 +131,9 @@ python tag_images_by_wd14_tagger.py "/Data path" --batch_size=8 --model_dir "../
 ```
 (3) Supplementary custom special labels
 After completing the automatic annotation of caption and tag, if we need to train some custom special annotations, we can also supplement the annotation of the data.
-You can directly open the file flux_finetune/custom tag.ipynb, modify the parameters according to the comments provided in the code, and then run the code to supplement the annotation of the data set. If you think the code is too complicated, you just need to set the train_data_dir ="/ local data set path "and custom_tag ="WeThinkIn" as the local path of your own data set and the special tag you want to add, and then run the code, which is very simple and practical.
+You can directly open the file flux_finetune/custom tag.ipynb, modify the parameters according to the comments provided in the code, and then run the code to supplement the annotation of the data set. If you think the code is too complicated, you just need to set the train_data_dir ="/ local data set path "and custom_tag ="WeThinkIn" as the local path of your own data set and the special tag you want to add, and then run the code.
 Generally, the special tags added manually will be put in the first place, because the first tag in a sentence has the largest weight, and the later tags have the smaller weight.
+
 (4) Training data preprocessing
 Making meta_data.json of training data: integrating the annotation files with suffixes of. caption and. txt just generated and storing them into a json format file, so as to facilitate the subsequent training of FLUX.1 model to retrieve training data and annotations according to the information in json.
 Make meta_data.json file of training data:
