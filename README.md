@@ -6,9 +6,11 @@ Only for learning and communication, not for business.
 # 1.Create environment
 there must be an environment, which can be the default, but it is best to create a new virtual environment. If it is a conda environment, you can use ```bash 
 conda create-name flux python = 3.10 
+```
 Or use 
 ```bash
 python-m venv flux" under Python version 3.10
+```
 
 # 2.Download dependence
 you can use the mirror source, you can also download directly from the official.Make sure it is a GPU version, and the versions of PyTroch, CUDA and cuDNN are compatible.
