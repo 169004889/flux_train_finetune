@@ -19,10 +19,12 @@ accelerate config
 
 In which compute environment are you running? 
 Please select a choice using the arrow or number keys, and selecting with enter
+
  ➔  This machine
     AWS (Amazon SageMaker)
                                                                                                        
 Which type of machine are you using? Please select a choice using the arrow or number keys, and selecting with enter
+ 
  ➔  No distributed training
     multi-CPU
     multi-XPU
@@ -43,6 +45,7 @@ Would you like to enable numa efficiency? (Currently only supported on NVIDIA ha
 
 Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                        
 Please select a choice using the arrow or number keys, and selecting with enter                                           
+   
     no                                                                                                                                                    
 ➔  fp16
     bf16
@@ -55,11 +58,13 @@ accelerate config
 
 In which compute environment are you running? 
 Please select a choice using the arrow or number keys, and selecting with enter
+ 
  ➔  This machine
     AWS (Amazon SageMaker)
                                                                                                        
 Which type of machine are you using?                                                                                                                      
 Please select a choice using the arrow or number keys, and selecting with enter
+  
     No distributed training                                                                                                                               
     multi-CPU                        
     multi-XPU                         
@@ -88,6 +93,7 @@ Would you like to enable numa efficiency? (Currently only supported on NVIDIA ha
 
 Do you wish to use FP16 or BF16 (mixed precision)?                                                                                                        
 Please select a choice using the arrow or number keys, and selecting with enter                                                                           
+   
     no                        
  ➔  fp16
     bf16
@@ -108,7 +114,8 @@ Data annotation can be divided into automatic annotation and manual annotation. 
 Judging from the annotation content, the annotation content in AI painting field can be mainly divided into two tasks: Img2Caption and Img2Tag.
 (1) using BLIP to automatically generate caption tags (natural language tags) of data.
 Automatically label data sets with BLIP, and the output of BLIP is natural language label. Enter the path of flux_finetune/finetune/ and run the following code to get natural language label (caption label):
-<img width="866" height="39" alt="image" src="https://github.com/user-attachments/assets/73e3920f-2132-4051-8c56-daf158c0f2f3" />
+<img width="906" height="30" alt="image" src="https://github.com/user-attachments/assets/bfc871d0-1914-4852-9750-5ee8c029a33c" />
+
 cd flux_finetune/finetune/
 python make_captions.py "/Replace with dataset path" --caption_weights "../BLIP/model_large_caption.pth" --batch_size=1 --beam_search --min_length=5 --max_length=100 --debug --caption_extension=".caption" --max_data_loader_n_workers=2 --recursive
 (2) Using WaifuDiffusion Tagger model to automatically generate data tag (permutation and combination of words)
@@ -123,6 +130,7 @@ pip install tensorflow==2.10.0 -i https://pypi.tuna.tsinghua.edu.cn/simple some-
 
 Next, the training data can be automatically labeled using WaifuDiffusion Tagger model, and the output of WaifuDiffusion Tagger model is tag keyword tags, which are composed of keyword phrases:
 <img width="1059" height="89" alt="image" src="https://github.com/user-attachments/assets/0e4bccfa-7d28-4353-b7d7-317afe8b1145" />
+
 cd flux_finetune/finetune/
 python tag_images_by_wd14_tagger.py "/Data path" --batch_size=8 --model_dir "../tag_models" --repo_id "wd-v1-4-moat-tagger-v2" --remove_underscore --general_threshold=0.35 --character_threshold=0.35 --caption_extension=".txt" --max_data_loader_n_workers=2 --debug --undesired_tags=""
 (3) Supplementary custom special labels
@@ -133,6 +141,7 @@ Generally, the special tags added manually will be put in the first place, becau
 Making meta_data.json of training data: integrating the annotation files with suffixes of. caption and. txt just generated and storing them into a json format file, so as to facilitate the subsequent training of FLUX.1 model to retrieve training data and annotations according to the information in json.
 Make meta_data.json file of training data:
 <img width="1734" height="180" alt="image" src="https://github.com/user-attachments/assets/708a2b56-1913-4c13-8c2a-fbf6b2c8856e" />
+
 cd flux_finetune
 python ./finetune/merge_all_to_metadata.py "/Local data path ""/local data path/meta_data.json"
 
