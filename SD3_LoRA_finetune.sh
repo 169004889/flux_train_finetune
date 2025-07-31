@@ -1,0 +1,34 @@
+accelerate launch  
+  --mixed_precision bf16 \
+  --num_cpu_threads_per_process 8 sd3_train_network.py \
+  --pretrained_model_name_or_path "/本地路径/stable-diffusion-3-medium/sd3_medium.safetensors" \
+  --clip_l "/本地路径/stable-diffusion-3-medium/text_encoders/clip_l.safetensors" \ 
+  --clip_g "/本地路径/stable-diffusion-3-medium/text_encoders/clip_g.safetensors" 
+  --t5xxl "/本地路径/stable-diffusion-3-medium/text_encoders/t5xxl_fp16.safetensors" \ 
+  --save_model_as safetensors \
+  --sdpa \
+  --persistent_data_loader_workers \
+  --max_data_loader_n_workers 8 \
+  --seed 2048 \
+  --gradient_checkpointing \
+  --mixed_precision bf16 \
+  --save_precision bf16 \
+  --network_module networks.lora_sd3 \
+  --network_dim 16 \
+  --network_alpha=8 \
+  --network_train_unet_only \
+  --optimizer_type "PagedAdamW8bit" \
+  --lr_scheduler constant_with_warmup \
+  --max_grad_norm 0.0 \
+  --learning_rate 1e-4 \
+  --cache_latents_to_disk \
+  --cache_text_encoder_outputs \
+  --cache_text_encoder_outputs_to_disk \
+  --highvram \
+  --max_train_epochs 10 \
+  --save_every_n_epochs 1 \
+  --dataset_config "/本地路径/data_LoRA_config.toml" \
+  --output_dir "/本地路径/模型保存地址" \
+  --output_name "WeThnkIn_SD3_LoRA" \
+  --t5xxl_max_token_length 512 \
+  --fp8_base 

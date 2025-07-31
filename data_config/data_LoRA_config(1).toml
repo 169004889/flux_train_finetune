@@ -1,0 +1,20 @@
+[general]
+# define common settings here
+flip_aug = false
+color_aug = false
+keep_tokens_separator= "|||"
+shuffle_caption = false
+caption_tag_dropout_rate = 0
+caption_extension = ".caption"
+keep_tokens = 1
+
+[[datasets]]
+# define the first resolution here
+batch_size = 1
+enable_bucket = true
+resolution = [1024, 1024]
+min_bucket_reso = 512
+
+  [[datasets.subsets]]
+  image_dir = "/本地路径/LoRA训练集"
+  num_repeats = 10

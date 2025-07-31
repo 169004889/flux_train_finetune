@@ -1,0 +1,32 @@
+accelerate launch \
+  --num_cpu_threads_per_process 8 sd3_train.py \
+  --pretrained_model_name_or_path "/本地路径/stable-diffusion-3-medium/sd3_medium.safetensors"  \
+  --clip_l "/本地路径/stable-diffusion-3-medium/text_encoders/clip_l.safetensors" \
+  --clip_g "/本地路径/stable-diffusion-3-medium/text_encoders/clip_g.safetensors" \
+  --t5xxl "/本地路径/stable-diffusion-3-medium/text_encoders/t5xxl_fp16.safetensors" \
+  --save_model_as safetensors \
+  --sdpa \
+  --persistent_data_loader_workers \
+  --max_data_loader_n_workers 8 \
+  --seed 42 \
+  --mixed_precision bf16 \
+  --save_precision bf16 \
+  --dataset_config "/本地路径/data_config.toml" \
+  --output_dir "/本地路径/模型保存地址" \
+  --output_name "WeThnkIn_SD3_model" \
+  --learning_rate 5e-6 \
+  --max_train_epochs 20  \
+  --highvram \
+  --save_every_n_epochs 1 \
+  --optimizer_type adafactor \
+  --optimizer_args "relative_step=False" "scale_parameter=False" "warmup_init=False" \
+  --lr_scheduler constant_with_warmup \
+  --max_grad_norm 0.0 \
+  --cache_text_encoder_outputs \
+  --cache_text_encoder_outputs_to_disk \
+  --cache_latents \
+  --cache_latents_to_disk \
+  --vae_batch_size 6 \
+  --text_encoder_batch_size 6 \
+  --num_last_block_to_freeze 120 \
+  --full_bf16  
