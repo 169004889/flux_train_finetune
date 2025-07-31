@@ -89,10 +89,24 @@ Please select a choice using the arrow or number keys, and selecting with enter
 ```                                                                           
 accelerate configuration saved at /root/.cache/huggingface/accelerate/default_config.yaml
 
-# 4.Set the text encoder
+# 4.Set the text encoder and model
+
+Because the github warehouse is set up, the large model can't be uploaded, so you need to find it yourself. This code originally used the fp8 version of flux1_dev. This code needs the following models in total and put them in the corresponding folders:
+```
+ae-model
+BLIP
+clip-model
+finetune\bert-base-uncased
+flux-fp8-model
+tag_models\wd-v1-4-moat-tagger-v2
+utils_json\ CLIP-ViT-bigG-14-laion2B-39B-b160k
+utils_json\clip-vit-large-patch14
+utils_json\t5-v1_1-xxl
+```
+Among them, ae-model is the model of ae encoder of flux, BLIP is the model of caption's automatic title generation, and clip-model is the model of two text encoders of flux, namely clip_I.safetensors and t5xxl_fp8.e4m3fn.safetensors, finetune\ Bert-base-uncased is bert model, flux-fp8-model is fp8 version model of flux1_dev, and tag _ models \ wd-v1-4-moat-tagger-v2 is automatic tag generation model.
 When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
 Under normal circumstances, FLUX.1 model will download configuration files from huggingface to ~/.cache/huggingface/ directory, but the download will probably fail due to network reasons, which will lead to the failure of training.
-Therefore, three configuration files, namely clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, have been put into the utils_json folder of the flux_finetune project, and the dependency paths have been configured for everyone. Just use Flux _ Fine. If you want to modify the call paths of the dependent folders clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, the corresponding part in the library/strategy_flux.py script will be modified into its own local customized path.
+Therefore, three configuration files, namely clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, have been put into the utils_json folder of the flux_finetune project, and the dependency paths have been configured for everyone. If you want to modify the call paths of the dependent folders clip-vit-large-patch14, Clip-Vit-Bigg-14-Laion2B-39b-B160K and t5-v1_1-xxl, the corresponding part in the library/strategy_flux.py script will be modified into its own local customized path.
 ```
 CLIP_L_TOKENIZER_ID = "./utils_json/clip-vit-large-patch14"
 T5_XXL_TOKENIZER_ID = "./utils_json/t5-v1_1-xxl"  # Lines 20-21 of the strategy_flux.py script
