@@ -102,6 +102,7 @@ tag_models\wd-v1-4-moat-tagger-v2
 utils_json\ CLIP-ViT-bigG-14-laion2B-39B-b160k
 utils_json\clip-vit-large-patch14
 utils_json\t5-v1_1-xxl
+wd-v1-4-moat-tagger-v2
 ```
 Among them, ae-model is the model of ae encoder of flux, BLIP is the model of caption's automatic title generation, and clip-model is the model of two text encoders of flux, namely clip_I.safetensors and t5xxl_fp8.e4m3fn.safetensors, finetune\ Bert-base-uncased is bert model, flux-fp8-model is fp8 version model of flux1_dev, and tag _ models \ wd-v1-4-moat-tagger-v2 is automatic tag generation model.
 When training the FLUX.1 model, the Text Encoder model of FLUX.1 will call two configuration files, namely clip-vit-large-patch14 and t5-v1_1-xxl.
